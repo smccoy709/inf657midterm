@@ -8,13 +8,23 @@ import {
   SafeAreaView,
 } from "react-native";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { addToCart, decrementQuantity, incrementQuantity, removeFromCart } from "./AddItem";
+import {
+  useDispatch,
+  useSelector
+} from "react-redux";
+import {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+  removeFromCart 
+} from "./AddItem";
 
 const ShoppingList = () => {
   const cart = useSelector((state) => state.cart.cart);
   console.log(cart);
   const dispatch = useDispatch();
+
+  // An array of images for the bakery site
   const images = [
     {
       id: "0",
@@ -47,6 +57,9 @@ const ShoppingList = () => {
       name: "Macarons",
     },
   ];
+
+  // Allowing items to be added to cart, removed from cart, and quantities
+  // to be increased or decreased
   const addItemToCart = (item) => {
     dispatch(addToCart(item));
   };
@@ -65,89 +78,77 @@ const ShoppingList = () => {
   }
   return (
     <SafeAreaView>
-          <ScrollView>
-      <Text style={styles.appTitleStyle}>
-        Scotty's Bakery!
-      </Text>
-      {images.map((item) => (
-        <Pressable
-          key={item.id}
-          style={{ flexDirection: "row", alignItems: "center" }}
-        >
-          <View style={{ margin: 10 }}>
-            <Image
-              style={{ width: 100, height: 100, borderRadius: 8 }}
-              source={{ uri: item.image }}
-            />
-          </View>
-          <View>
-            <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
-            {cart.some((value) => value.id == item.id) ? (
-              <Pressable onPress={() => removeItemFromCart(item)}>
-                <Text style={styles.addToCartText}>
-                  REMOVE FROM CART
-                </Text>
-              </Pressable>
-            ) : (
-              <Pressable onPress={() => addItemToCart(item)}>
-                <Text style={styles.addToCartText}>
-                  ADD TO CART
-                </Text>
-              </Pressable>
-            )}
-          </View>
-        </Pressable>
-      ))}
-      <Text style={styles.cartHeadingStyle}>
-        Your Cart Items
-      </Text>
-      {cart.map((item,index) => (
-        <View style={{padding:10}} key={index}>
-          <Text>{item.name}</Text>
-          <Image style={styles.imageStyle}
-              source={{ uri: item.image }}/>
+      <ScrollView>
+        {/* The title for the app */}
+        <Text style={styles.appTitleStyle}>
+          Scotty's Bakery!
+        </Text>
+        {images.map((item) => (
+          /* Allowing the "ADD TO CART" and "REMOVE FROM CART" be clickable */
           <Pressable
-            style={{
-              flexDirection: "row",
-              marginTop:20,
-              alignItems: "center",
-              backgroundColor: "#FF3366",
-              borderRadius: 5,
-              width: 120,
-            }}
-          >
-            <Pressable onPress={() => decreaseQuantity(item)}>
-              <Text
-                style={styles.textStyle}
-              >
-                -
-              </Text>
-            </Pressable>
-
-            <Pressable>
-            <Text
-                style={styles.textStyle}
-              >
-                {item.quantity}
-              </Text>
-            </Pressable>
-
-            <Pressable onPress={() => increaseQuantity(item)}>
-            <Text
-                style={styles.textStyle}
-              >
-                +
-              </Text>
-            </Pressable>
+            key={item.id}
+            style={styles.imageContainer}>
+            <View style={styles.interfaceMargin}>
+              <Image
+                style={styles.imageProperties} source={{ uri: item.image }} />
+            </View>
+            <View>
+              <Text style={styles.itemName}>{item.name}</Text>
+                {cart.some((value) => value.id == item.id) ? (
+                <Pressable onPress={() => removeItemFromCart(item)}>
+                  <Text style={styles.addToCartText}>
+                    REMOVE FROM CART
+                  </Text>
+                </Pressable>
+              ) : (
+                <Pressable onPress={() => addItemToCart(item)}>
+                  <Text style={styles.addToCartText}>
+                    ADD TO CART
+                  </Text>
+                </Pressable>
+              )}
+            </View>
           </Pressable>
-        </View>
-      ))}
+        ))}
+        <Text style={styles.cartHeadingStyle}>
+          Your Cart Items
+        </Text>
+        {cart.map((item,index) => (
+        <View style={styles.quantityPadding} key={index}>
+          <Text>{item.name}</Text>
+            <Image style={styles.imageStyle} source={{ uri: item.image }}/>
+            <Pressable style={styles.quantityContainer}>
+              {/* Allowing the quantity to be decreased when the "-" is clicked */}
+              <Pressable onPress={() => decreaseQuantity(item)}>
+                <Text style={styles.textStyle}>
+                  -
+                </Text>
+              </Pressable>
+
+              <Pressable>
+                <Text style={styles.textStyle}>
+                  {item.quantity}
+                </Text>
+              </Pressable>
+              {/* Allowing the quantity to be increased when the "+" is clicked */}
+              <Pressable onPress={() => increaseQuantity(item)}>
+                <Text style={styles.textStyle}>
+                  +
+                </Text>
+              </Pressable>
+            </Pressable>
+          </View>
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
+// Stylesheets
 const styles = StyleSheet.create({
+  interfaceMargin: {
+    margin: 10,
+  },
   textStyle: {
     fontSize: 20,
     color: "white",
@@ -172,11 +173,34 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     padding: 5,
   },
+  imageContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   imageStyle: {
     width: 100,
     height: 100,
     borderRadius: 8,
     marginTop: 6,
+  },
+  imageProperties: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+  },
+  itemName: {
+    fontWeight: "bold",
+  },
+  quantityContainer: {
+    flexDirection: "row",
+    marginTop: 20,
+    alignItems: "center",
+    backgroundColor: "#FF3366",
+    borderRadius: 5,
+    width: 100,
+  },
+  quantityPadding: {
+    padding: 10,
   }
 });
 
