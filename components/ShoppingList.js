@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "white",
     paddingHorizontal: 10,
+    marginLeft: 2,
   },
   appTitleStyle: {
     textAlign: "center",
