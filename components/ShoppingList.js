@@ -144,6 +144,7 @@ const ShoppingList = () => {
   );
 };
 
+
 // Stylesheets
 const styles = StyleSheet.create({
   interfaceMargin: {
@@ -159,6 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 25,
+    marginTop: 50,
   },
   cartHeadingStyle: {
     textAlign: "center",
@@ -201,6 +203,12 @@ const styles = StyleSheet.create({
   },
   quantityPadding: {
     padding: 10,
+  },
+  deleteContainer: {
+    backgroundColor: "red",
+    width: 70,
+    justifyContent: "center",
+    alignItems: "center",
   }
 });
 
